@@ -14,7 +14,6 @@ struct bracket *p_stack = stack;
 
 int main() {
     char c;
-    struct bracket *p_new_bracket;
     int i = 1;
     while ((c = getchar()) != EOF) {
         switch (c) {

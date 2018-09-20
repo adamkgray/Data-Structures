@@ -1,48 +1,50 @@
 /* Check for matching brackets in a string */
 
 #include <stdio.h>
+#include <stdlib.h>
 #define MAX_STACK 100000
 
-char bracket_stack[MAX_STACK], *p_bracket_stack = bracket_stack;
-int token_stack[MAX_STACK], *p_token_stack = token_stack;
+struct bracket {
+    char value;
+    int position;
+};
+
+struct bracket stack[MAX_STACK];
+struct bracket *p_stack = stack;
 
 int main() {
     char c;
+    struct bracket *p_new_bracket;
     int i = 1;
     while ((c = getchar()) != EOF) {
         switch (c) {
             case '{':
             case '[':
             case '(':
-                ++p_bracket_stack;
-                *p_bracket_stack = c;
-
-                ++p_token_stack;
-                *p_token_stack = i;
+                ++p_stack;
+                p_stack->value = c;
+                p_stack->position = i;
                 break;
             case '}':
-                if ((p_bracket_stack == bracket_stack) || (*p_bracket_stack != '{')) {
+                if ((p_stack == stack) || (p_stack->value != '{')) {
                     printf("%d\n", i);
                     return i;
                 }
-                --p_bracket_stack;
-                --p_token_stack;
+                --p_stack;
                 break;
             case ']':
-                if ((p_bracket_stack == bracket_stack) || (*p_bracket_stack != '[')) {
+                if ((p_stack == stack) || (p_stack->value != '[')) {
                     printf("%d\n", i);
                     return i;
                 }
-                --p_bracket_stack;
-                --p_token_stack;
+                --p_stack;
                 break;
             case ')':
-                if ((p_bracket_stack == bracket_stack) || (*p_bracket_stack != '(')) {
+                if ((p_stack == stack) || (p_stack->value != '(')) {
                     printf("%d\n", i);
                     return i;
                 }
-                --p_bracket_stack;
-                --p_token_stack;
+                --p_stack;
                 break;
             default:
                 break;
@@ -50,8 +52,8 @@ int main() {
         ++i;
     }
 
-    if (p_token_stack != token_stack) {
-        printf("%d\n", *(token_stack+1));
+    if (p_stack != stack) {
+        printf("%d\n", ((stack+1)->position));
     } else {
         printf("Success\n");
     }

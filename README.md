@@ -1,3 +1,3 @@
 # Data Structures
 
-Implementations of data strucures in C
+Solutions to computational problems using data structures in C

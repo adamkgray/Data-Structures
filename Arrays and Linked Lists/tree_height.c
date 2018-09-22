@@ -1,4 +1,4 @@
-/* Compute the height of a binary tree */
+/* Compute the height of a binary from stdin where each node has an arbitraray number of children */
 
 #include <stdio.h>
 #include <stdlib.h>

@@ -1,4 +1,4 @@
-/* Check for matching brackets in a string */
+/* Check for matching brackets from stdin */
 
 #include <stdio.h>
 #include <stdlib.h>

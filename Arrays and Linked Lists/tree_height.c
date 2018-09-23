@@ -5,6 +5,7 @@
 #include <ctype.h>
 
 struct node {
+    int max_children;
     int children_count;
     struct node **children;
 };
@@ -29,6 +30,7 @@ int main() {
 
     /* Initialize tree with NULL values */
     for (p_tree = tree, i = 0; i < n; ++i, ++p_tree) {
+        p_tree->max_children = 0;
         p_tree->children = NULL;
         p_tree->children_count = 0;
     }
@@ -74,20 +76,25 @@ void tree_height(struct node *parent, int level, int *max_level) {
 }
 
 void addChild(struct node *parent, struct node *child) {
-    /* Increment size of parent's list of children */
-    parent->children_count = parent->children_count + 1;
-
-    /* Create first child, or reallocate for more children */
-    if (parent->children_count == 1) {
+    /* First child */
+    if (parent->children_count == 0) {
+        parent->children_count = 1;
+        parent->max_children = 1;
         parent->children = (struct node **)malloc(sizeof(struct node *));
+
     } else {
-        parent->children = (struct node **)realloc(parent->children, parent->children_count * sizeof(struct node *));
+        /* Too many children, reallocate memory */
+        if (parent->children_count == parent->max_children) {
+            parent->max_children *= 2;
+            parent->children = (struct node **)realloc(parent->children, parent->max_children * sizeof(struct node *));
+        }
+
+        /* Increment child count */
+        parent->children_count += 1;
     }
 
-    /* Set the last element in the list of children to be the new child */
+    /* Append new child */
     parent->children[parent->children_count - 1] = child;
-
-    return;
 }
 
 void read_word(char *buffer) {
